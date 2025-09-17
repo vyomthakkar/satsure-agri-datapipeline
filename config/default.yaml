@@ -1,0 +1,68 @@
+pipeline:
+  name: "agricultural_sensor_pipeline"
+  version: "1.0.0"
+
+project:
+  timezone: "UTC+05:30"
+  run_id: null  # optional identifier per run
+
+paths:
+  data_raw: "../data/raw"
+  data_processed: "../data/processed"
+  reports_dir: "../reports"
+  dq_report_csv: "../reports/data_quality_report.csv"
+
+schema:
+  expected_columns:
+    - sensor_id
+    - timestamp
+    - reading_type
+    - value
+    - battery_level
+  types:
+    sensor_id: "VARCHAR"
+    timestamp: "TIMESTAMP"
+    reading_type: "VARCHAR"
+    value: "DOUBLE"
+    battery_level: "DOUBLE"
+
+ranges:
+  temperature:
+    min: -10
+    max: 60
+  humidity:
+    min: 0
+    max: 100
+  battery_level:
+    min: 0
+    max: 100
+
+# Simple per-reading_type sensor calibration
+calibration:
+  temperature:
+    multiplier: 1.0
+    offset: 0.0
+  humidity:
+    multiplier: 1.0
+    offset: 0.0
+
+write:
+  compression: "zstd"
+  partition_by:
+    - date  # derived from timestamp (YYYY-MM-DD)
+    - sensor_id 
+  mode: "overwrite"  # or append
+
+
+transformation:
+  z_score_threshold: 3.0
+  rolling_window_days: 7
+  outlier_handling: "flag"  # flag or remove
+
+validation:
+  max_missing_percentage: 20
+  expected_frequency_hours: 1
+
+ingestion:
+  incremental_mode: true
+  checkpoint_file: "../data/.checkpoint"

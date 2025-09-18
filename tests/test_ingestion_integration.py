@@ -144,8 +144,16 @@ class TestIngestionIntegration:
 class TestIngestionPerformance:
     """Performance tests for ingestion component (marked as slow)."""
 
-    def test_large_file_processing_performance(self, real_config):
+    def test_large_file_processing_performance(self):
         """Test performance with available data files."""
+        from src.config import PipelineConfig
+        from pathlib import Path
+
+        config_path = Path("config/default.yaml")
+        if not config_path.exists():
+            pytest.skip("Real config file not found")
+
+        real_config = PipelineConfig.from_yaml(config_path)
         component = ParquetIngestionComponent(real_config)
 
         import time

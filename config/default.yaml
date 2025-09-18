@@ -7,10 +7,10 @@ project:
   run_id: null  # optional identifier per run
 
 paths:
-  data_raw: "../data/raw"
-  data_processed: "../data/processed"
-  reports_dir: "../reports"
-  dq_report_csv: "../reports/data_quality_report.csv"
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  reports_dir: "reports"
+  dq_report_csv: "reports/data_quality_report.csv"
 
 schema:
   expected_columns:
@@ -65,4 +65,4 @@ validation:
 
 ingestion:
   incremental_mode: true
-  checkpoint_file: "../data/.checkpoint"
+  checkpoint_file: "data/.checkpoint"

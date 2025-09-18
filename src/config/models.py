@@ -37,9 +37,10 @@ class DataPaths(BaseModel):
         if isinstance(v, str):
             path = Path(v)
             if not path.is_absolute():
-                # Resolve relative to project root (parent of src)
-                project_root = Path(__file__).parent.parent.parent
-                path = (project_root / v).resolve()
+                # Resolve relative to current working directory (project root)
+                # Paths in config are relative to where the script is run from
+                path = Path.cwd() / v
+                path = path.resolve()
             return str(path)
         return v
 
@@ -99,8 +100,9 @@ class IngestionSettings(BaseModel):
         if isinstance(v, str):
             path = Path(v)
             if not path.is_absolute():
-                project_root = Path(__file__).parent.parent.parent
-                path = (project_root / v).resolve()
+                # Resolve relative to current working directory (project root)
+                path = Path.cwd() / v
+                path = path.resolve()
             return str(path)
         return v
 

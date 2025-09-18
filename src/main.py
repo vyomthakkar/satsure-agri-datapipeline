@@ -12,10 +12,10 @@ from typing import Optional
 from src.config import PipelineConfig
 from src.models import PipelineResult, ValidationResult
 from src.components import (
-    IngestionComponent,
-    TransformationComponent,
-    ValidationComponent,
-    LoadingComponent
+    ParquetIngestionComponent,
+    AgricultureTransformationComponent,
+    AgricultureValidationComponent,
+    AgricultureLoadingComponent
 )
 
 
@@ -32,17 +32,17 @@ class AgricultureDataPipeline:
         self.config = config
 
         # Components will be injected (dependency injection pattern)
-        self.ingestion: Optional[IngestionComponent] = None
-        self.transformation: Optional[TransformationComponent] = None
-        self.validation: Optional[ValidationComponent] = None
-        self.loading: Optional[LoadingComponent] = None
+        self.ingestion: Optional[ParquetIngestionComponent] = None
+        self.transformation: Optional[AgricultureTransformationComponent] = None
+        self.validation: Optional[AgricultureValidationComponent] = None
+        self.loading: Optional[AgricultureLoadingComponent] = None
 
     def set_components(
         self,
-        ingestion: IngestionComponent,
-        transformation: TransformationComponent,
-        validation: ValidationComponent,
-        loading: LoadingComponent
+        ingestion: ParquetIngestionComponent,
+        transformation: AgricultureTransformationComponent,
+        validation: AgricultureValidationComponent,
+        loading: AgricultureLoadingComponent
     ):
         """
         Set pipeline components (dependency injection).
@@ -109,7 +109,7 @@ class AgricultureDataPipeline:
                 success=loading_success and len(errors) == 0,
                 records_processed=len(raw_data),
                 records_stored=len(transformed_data) if loading_success else 0,
-                validation_result=None,  # Will be populated when validation component is implemented
+                validation_result=validation_results,
                 execution_time_seconds=execution_time,
                 errors=errors
             )
@@ -137,17 +137,33 @@ def main():
         config_path = Path("config/default.yaml")
         config = PipelineConfig.from_yaml(config_path)
 
-        # Create pipeline
+        # Create pipeline and components
         pipeline = AgricultureDataPipeline(config)
 
-        # TODO: Implement actual component instances
-        # For now, this is just the framework
-        print("Pipeline framework is ready!")
-        print("Next steps: Implement the four pipeline components")
-        print("- IngestionComponent")
-        print("- TransformationComponent")
-        print("- ValidationComponent")
-        print("- LoadingComponent")
+        # Initialize all components
+        ingestion = ParquetIngestionComponent(config)
+        transformation = AgricultureTransformationComponent(config)
+        validation = AgricultureValidationComponent(config)
+        loading = AgricultureLoadingComponent(config)
+
+        # Set components in pipeline
+        pipeline.set_components(ingestion, transformation, validation, loading)
+
+        # Execute pipeline
+        result = pipeline.execute()
+
+        print(f"\n📊 Pipeline Execution Summary:")
+        print(f"   Success: {result.success}")
+        print(f"   Records processed: {result.records_processed}")
+        print(f"   Records stored: {result.records_stored}")
+        print(f"   Execution time: {result.execution_time_seconds:.2f} seconds")
+
+        if result.errors:
+            print(f"   Errors: {', '.join(result.errors)}")
+
+        if result.validation_result:
+            print(f"   Validation passed: {result.validation_result.passed}")
+            print(f"   Issues found: {len(result.validation_result.issues_found)}")
 
     except Exception as e:
         print(f"Failed to initialize pipeline: {e}")

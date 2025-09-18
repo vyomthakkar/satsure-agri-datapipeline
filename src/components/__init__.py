@@ -8,10 +8,19 @@ from .base import (
     LoadingComponent
 )
 
+from .ingestion import ParquetIngestionComponent
+from .transformation import AgricultureTransformationComponent
+from .validation import AgricultureValidationComponent
+from .loading import AgricultureLoadingComponent
+
 __all__ = [
     "PipelineComponent",
     "IngestionComponent",
     "TransformationComponent",
     "ValidationComponent",
-    "LoadingComponent"
+    "LoadingComponent",
+    "ParquetIngestionComponent",
+    "AgricultureTransformationComponent",
+    "AgricultureValidationComponent",
+    "AgricultureLoadingComponent"
 ]

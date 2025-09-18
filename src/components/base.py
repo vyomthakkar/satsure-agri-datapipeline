@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional
 from pathlib import Path
 import pandas as pd
 from src.config import PipelineConfig
+from src.models import ValidationResult
 
 
 class PipelineComponent(ABC):
@@ -81,7 +82,7 @@ class LoadingComponent(PipelineComponent):
     """Abstract base for data loading/storage components."""
 
     @abstractmethod
-    def execute(self, validated_data: pd.DataFrame, validation_results: Dict[str, Any]) -> bool:
+    def execute(self, validated_data: pd.DataFrame, validation_results: ValidationResult) -> bool:
         """
         Store validated data in final destination.
 

@@ -15,6 +15,7 @@ from src.config.models import PipelineConfig
 from src.components.ingestion import ParquetIngestionComponent
 from src.components.transformation import AgricultureTransformationComponent
 from src.components.validation import AgricultureValidationComponent
+from src.components.loading import AgricultureLoadingComponent
 
 
 def main():
@@ -32,13 +33,14 @@ def main():
         ingestion = ParquetIngestionComponent(config)
         transformation = AgricultureTransformationComponent(config)
         validation = AgricultureValidationComponent(config)
-        print("✓ Initialized ingestion, transformation, and validation components")
+        loading = AgricultureLoadingComponent(config)
+        print("✓ Initialized all 4 pipeline components: ingestion, transformation, validation, and loading")
 
         print("\n📥 Step 1: Data Ingestion")
         print("-" * 30)
 
-        # Run ingestion with force_full_reload to reprocess all files
-        raw_data = ingestion.execute(force_full_reload=True)
+        # Run ingestion in incremental mode (respects checkpoint)
+        raw_data = ingestion.execute(force_full_reload=False)
         print(f"✓ Ingested {len(raw_data)} records")
 
         if len(raw_data) > 0:
@@ -133,6 +135,42 @@ def main():
                 print("-" * 30)
                 for key, value in validation.stats.items():
                     print(f"   {key.replace('_', ' ').title()}: {value}")
+
+                print("\n💾 Step 4: Data Loading")
+                print("-" * 30)
+
+                # Run loading
+                loading_success = loading.execute(transformed_data, validation_result)
+                print(f"✓ Loading completed: {'SUCCESS' if loading_success else 'FAILED'}")
+
+                if loading_success:
+                    print(f"   - Records stored: {loading.stats['records_stored']}")
+                    print(f"   - Storage size: {loading.stats['storage_size_bytes'] / 1024:.1f} KB")
+                    print(f"   - Files written: {loading.stats['files_written']}")
+                    print(f"   - Partitions created: {loading.stats['partitions_created']}")
+
+                    if loading.stats['quality_failed_stored'] > 0:
+                        print(f"   - Quality failed records stored: {loading.stats['quality_failed_stored']}")
+
+                    # Show storage structure
+                    print(f"   - Output location: {config.paths.data_processed}")
+                    print(f"   - Compression: {config.write.compression}")
+                    print(f"   - Partitioned by: {', '.join(config.write.partition_by)}")
+
+                    # Get storage summary
+                    storage_summary = loading.get_storage_summary()
+                    if "partitions" in storage_summary:
+                        print(f"   - Partition structure:")
+                        for partition in storage_summary["partitions"][:3]:  # Show first 3 partitions
+                            print(f"     • {partition['date']}: {len(partition['sensors'])} sensors")
+
+                print("\n💾 Loading Statistics:")
+                print("-" * 30)
+                for key, value in loading.stats.items():
+                    if key == "storage_size_bytes":
+                        print(f"   {key.replace('_', ' ').title()}: {value / 1024:.1f} KB")
+                    else:
+                        print(f"   {key.replace('_', ' ').title()}: {value}")
 
             else:
                 print("⚠️  No data after transformation")

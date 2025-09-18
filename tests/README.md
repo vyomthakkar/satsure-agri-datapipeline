@@ -67,6 +67,71 @@ Comprehensive unit tests for the transformation component covering:
 - ✅ TransformationError propagation
 - ✅ Comprehensive logging and summary reporting
 
+### Unit Tests (`test_validation.py`)
+Comprehensive unit tests for the validation component covering:
+
+**Core Functionality:**
+- ✅ Component initialization and configuration
+- ✅ Data quality validation with configurable thresholds
+- ✅ Value range validation per reading type
+- ✅ Gap detection using time series analysis
+- ✅ Quality score calculation and reporting
+
+**Schema Validation:**
+- ✅ Required column presence validation
+- ✅ Data type compatibility checking
+- ✅ Missing value percentage thresholds
+- ✅ Anomaly rate threshold validation
+
+**Quality Metrics:**
+- ✅ Missing value analysis by reading type
+- ✅ Anomaly percentage calculation
+- ✅ Sensor coverage analysis
+- ✅ Gap detection with configurable thresholds
+- ✅ Overall statistics generation
+
+**Report Generation:**
+- ✅ Quality report CSV export
+- ✅ Validation metadata JSON storage
+- ✅ Issue tracking and categorization
+- ✅ Statistics tracking and logging
+
+**Error Handling:**
+- ✅ Empty data handling
+- ✅ Missing column scenarios
+- ✅ ValidationError propagation
+- ✅ Quality threshold failures
+
+### Unit Tests (`test_loading.py`)
+Comprehensive unit tests for the loading component covering:
+
+**Core Functionality:**
+- ✅ Component initialization and configuration
+- ✅ Partitioned Parquet storage (Hive-style partitioning)
+- ✅ Data type optimization and compression
+- ✅ Validation metadata storage
+- ✅ Storage statistics tracking
+
+**Storage Features:**
+- ✅ Modern PyArrow dataset API usage
+- ✅ ZSTD compression and optimization
+- ✅ Quality-aware data storage
+- ✅ Overwrite vs append mode handling
+- ✅ Concurrent storage access safety
+
+**Data Management:**
+- ✅ Partitioned data querying
+- ✅ Storage summary generation
+- ✅ Quality score integration
+- ✅ Large dataset handling
+- ✅ Empty data scenarios
+
+**Error Handling:**
+- ✅ LoadingError exception handling
+- ✅ Storage failure scenarios
+- ✅ Invalid data structure handling
+- ✅ Configuration validation
+
 ### Integration Tests (`test_ingestion_integration.py`)
 Real-world integration tests:
 
@@ -111,12 +176,20 @@ python -m pytest tests/test_ingestion.py -v
 # Transformation tests
 python -m pytest tests/test_transformation.py -v
 
+# Validation tests
+python -m pytest tests/test_validation.py -v
+
+# Loading tests
+python -m pytest tests/test_loading.py -v
+
 # Integration tests (requires project setup)
 python -m pytest tests/test_ingestion_integration.py -v
 
 # Specific test examples
 python -m pytest tests/test_ingestion.py::TestParquetIngestionComponent::test_execute_with_sample_data -v
 python -m pytest tests/test_transformation.py::TestAgricultureTransformationComponent::test_anomaly_detection_with_outliers -v
+python -m pytest tests/test_validation.py::TestAgricultureValidationComponent::test_execute_with_sample_data -v
+python -m pytest tests/test_loading.py::TestAgricultureLoadingComponent::test_execute_with_valid_data -v
 ```
 
 ### Performance Tests
@@ -125,69 +198,6 @@ python -m pytest tests/test_transformation.py::TestAgricultureTransformationComp
 python -m pytest tests/ -m slow -v
 ```
 
-## Test Results Summary
-
-### Current Status: ✅ All Unit Tests Passing
-
-**Ingestion Tests:**
-```
-======================= 21 passed, 5 warnings ========================
-```
-
-**Transformation Tests:**
-```
-======================= 18 passed, 0 warnings ========================
-```
-
-**Test Coverage:**
-- 🎯 **100% Function Coverage**: All public methods tested
-- 🎯 **Edge Case Coverage**: Error conditions, corrupted files, schema issues, anomaly detection
-- 🎯 **Integration Coverage**: Real data processing validated
-- 🎯 **Data Quality Coverage**: Missing values, duplicates, outliers, calibration
-
-### Key Test Insights
-
-**1. Type Compatibility Handling**
-Our tests revealed that DuckDB creates `TIMESTAMP_NS` when reading pandas DataFrames, but configs expect `TIMESTAMP`. We implemented flexible type compatibility checking.
-
-**2. Error Isolation**
-Tests confirm that file processing errors don't crash the entire pipeline - it continues processing other files and provides detailed statistics.
-
-**3. Incremental Processing**
-Checkpoint management works correctly, allowing both incremental daily processing and full reloads for data corrections.
-
-**4. Anomaly Detection Robustness**
-Transformation tests validate sophisticated anomaly detection:
-- ✅ Z-score based detection with configurable thresholds
-- ✅ Range-based validation per reading type
-- ✅ No double-counting of outliers flagged by multiple methods
-- ✅ Battery level validation separate from reading anomalies
-- ✅ Proper handling of edge cases (single values, all-NaN groups)
-
-**5. Real Data Validation**
-Successfully processes the project's sample data file:
-- ✅ 30 records from 5 sensors
-- ✅ Temperature and humidity readings
-- ✅ All schema validations pass
-- ✅ Statistics properly tracked
-
-## Adding New Tests
-
-### For New Components
-1. Create `test_[component_name].py`
-2. Add fixtures to `conftest.py` if needed
-3. Follow the established patterns:
-   - Test initialization
-   - Test core functionality
-   - Test error conditions
-   - Test edge cases
-
-### Test Best Practices
-- Use descriptive test names
-- Create isolated test environments with `temp_dir`
-- Test both happy path and error conditions
-- Use appropriate assertions with helpful messages
-- Mock external dependencies when needed
 
 ## CI/CD Integration
 
@@ -203,13 +213,3 @@ test:
     - python -m pytest tests/test_ingestion_integration.py || true  # Allow failure if no real data
 ```
 
-## Future Enhancements
-
-- [x] ~~Add transformation component tests~~ ✅ **Completed**
-- [ ] Add validation component tests
-- [ ] Add loading component tests
-- [ ] Add end-to-end pipeline tests
-- [ ] Add performance benchmarking
-- [ ] Add data quality regression tests
-- [ ] Add transformation performance tests (large datasets)
-- [ ] Add anomaly detection accuracy benchmarks

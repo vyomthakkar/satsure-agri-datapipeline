@@ -235,11 +235,6 @@ class ParquetIngestionComponent(IngestionComponent):
                     f"{file_path.name} column order differs. Expected {expected_cols}, found {actual_cols}"
                 )
 
-            # TODO(human): Implement flexible type validation
-            # Currently this checks for exact type matches, but we need to handle
-            # compatible types like TIMESTAMP vs TIMESTAMP_NS, DOUBLE vs FLOAT64, etc.
-            # Create a helper function to check type compatibility instead of exact equality.
-
             # Validate types by column name (with compatibility checking)
             type_mismatches = {
                 c: {"expected": expected_type_map.get(c), "actual": actual_type_map.get(c)}

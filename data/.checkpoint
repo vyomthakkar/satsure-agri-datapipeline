@@ -3,7 +3,7 @@
     "non_existent_file.parquet",
     "2023-06-01.parquet"
   ],
-  "last_update": "2025-09-18T09:20:38.054532",
+  "last_update": "2025-09-18T10:38:51.685239",
   "last_run_stats": {
     "files_discovered": 1,
     "files_processed": 0,

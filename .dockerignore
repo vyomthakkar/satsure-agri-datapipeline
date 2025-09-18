@@ -1,0 +1,38 @@
+# Ignore VCS and IDE files
+.git
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.so
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Local environments
+.env
+.venv/
+venv/
+
+# Large/local data and reports (mount at runtime instead)
+data/
+reports/
+
+# Coverage and test outputs
+.coverage
+coverage.xml
+htmlcov/
+
+# Misc
+*.swp
+*~
+.claude/

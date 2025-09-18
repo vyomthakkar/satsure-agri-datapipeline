@@ -1,20 +1,26 @@
 category,metric,value,threshold,status,details,validation_timestamp,validator_version
-overall,total_records,30.0,,pass,Total records processed: 30,2025-09-18T14:31:18.883909,1.0.0
-overall,unique_sensors,5.0,,info,Unique sensors: 5,2025-09-18T14:31:18.883909,1.0.0
-missing_values,humidity_missing_percentage,0.0,20.0,pass,0 out of 13 records,2025-09-18T14:31:18.883909,1.0.0
-missing_values,temperature_missing_percentage,0.0,20.0,pass,0 out of 17 records,2025-09-18T14:31:18.883909,1.0.0
-anomalies,temperature_anomaly_percentage,0.0,10.0,pass,0 out of 17 records,2025-09-18T14:31:18.883909,1.0.0
-anomalies,humidity_anomaly_percentage,0.0,10.0,pass,0 out of 13 records,2025-09-18T14:31:18.883909,1.0.0
-time_gaps,total_missing_hours,10.0,1.0,warning,Total missing hourly readings: 10,2025-09-18T14:31:18.883909,1.0.0
-sensor_coverage,sensor_5_battery_level,63.0,30.0,pass,"Average battery: 63.0%, 10 readings",2025-09-18T14:31:18.883909,1.0.0
-sensor_coverage,sensor_4_battery_level,62.8,30.0,pass,"Average battery: 62.8%, 7 readings",2025-09-18T14:31:18.883909,1.0.0
-sensor_coverage,sensor_2_battery_level,60.8,30.0,pass,"Average battery: 60.8%, 6 readings",2025-09-18T14:31:18.883909,1.0.0
-sensor_coverage,sensor_1_battery_level,56.0,30.0,pass,"Average battery: 56.0%, 5 readings",2025-09-18T14:31:18.883909,1.0.0
-sensor_coverage,sensor_3_battery_level,48.3,30.0,pass,"Average battery: 48.3%, 2 readings",2025-09-18T14:31:18.883909,1.0.0
-issues,issue_1,,,fail,Sensor sensor_1 (temperature): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 18:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_2,,,fail,Sensor sensor_2 (humidity): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 18:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_3,,,fail,Sensor sensor_4 (humidity): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 17:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_4,,,fail,Sensor sensor_1 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_5,,,fail,Sensor sensor_3 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_6,,,fail,Sensor sensor_5 (temperature): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
-issues,issue_7,,,fail,Sensor sensor_5 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905,2025-09-18T14:31:18.883909,1.0.0
+overall,total_records,72.0,,pass,Total records processed: 72,2025-09-18T16:19:55.562151,1.0.0
+overall,unique_sensors,5.0,,info,Unique sensors: 5,2025-09-18T16:19:55.562151,1.0.0
+missing_values,temperature_missing_percentage,0.0,20.0,pass,0 out of 32 records,2025-09-18T16:19:55.562151,1.0.0
+missing_values,humidity_missing_percentage,0.0,20.0,pass,0 out of 40 records,2025-09-18T16:19:55.562151,1.0.0
+anomalies,humidity_anomaly_percentage,22.5,10.0,fail,9 out of 40 records,2025-09-18T16:19:55.562151,1.0.0
+anomalies,temperature_anomaly_percentage,12.5,10.0,fail,4 out of 32 records,2025-09-18T16:19:55.562151,1.0.0
+time_gaps,total_missing_hours,643.0,1.0,warning,Total missing hourly readings: 643,2025-09-18T16:19:55.562151,1.0.0
+sensor_coverage,sensor_5_battery_level,61.6,30.0,pass,"Average battery: 61.6%, 27 readings",2025-09-18T16:19:55.562151,1.0.0
+sensor_coverage,sensor_2_battery_level,64.1,30.0,pass,"Average battery: 64.1%, 14 readings",2025-09-18T16:19:55.562151,1.0.0
+sensor_coverage,sensor_4_battery_level,53.0,30.0,pass,"Average battery: 53.0%, 14 readings",2025-09-18T16:19:55.562151,1.0.0
+sensor_coverage,sensor_1_battery_level,51.6,30.0,pass,"Average battery: 51.6%, 12 readings",2025-09-18T16:19:55.562151,1.0.0
+sensor_coverage,sensor_3_battery_level,76.2,30.0,pass,"Average battery: 76.2%, 5 readings",2025-09-18T16:19:55.562151,1.0.0
+issues,issue_1,,,fail,"Found 4 temperature values outside range [-10.0, 60.0]",2025-09-18T16:19:55.562151,1.0.0
+issues,issue_2,,,fail,"Found 9 humidity values outside range [0.0, 100.0]",2025-09-18T16:19:55.562151,1.0.0
+issues,issue_3,,,fail,"Found 2 battery_level values outside range [0.0, 100.0]",2025-09-18T16:19:55.562151,1.0.0
+issues,issue_4,,,fail,Sensor sensor_3 (temperature): 70 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_5,,,fail,Sensor sensor_3 (humidity): 68 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_6,,,fail,Sensor sensor_1 (humidity): 66 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_7,,,fail,Sensor sensor_2 (temperature): 66 hour gap from 2023-06-02 07:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_8,,,fail,Sensor sensor_4 (temperature): 66 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_9,,,fail,Sensor sensor_1 (temperature): 65 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_10,,,fail,Sensor sensor_2 (humidity): 63 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_11,,,fail,Sensor sensor_4 (humidity): 62 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_12,,,fail,Sensor sensor_5 (temperature): 60 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0
+issues,issue_13,,,fail,Sensor sensor_5 (humidity): 57 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00,2025-09-18T16:19:55.562151,1.0.0

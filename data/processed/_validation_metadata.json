@@ -1,150 +1,177 @@
 {
-  "validation_timestamp": "2025-09-18T14:31:18.933854",
-  "data_quality_passed": true,
-  "total_records": 30,
-  "issues_count": 7,
+  "validation_timestamp": "2025-09-18T16:19:55.614862",
+  "data_quality_passed": false,
+  "total_records": 72,
+  "issues_count": 13,
   "issues_found": [
-    "Sensor sensor_1 (temperature): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 18:53:48.068905",
-    "Sensor sensor_2 (humidity): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 18:53:48.068905",
-    "Sensor sensor_4 (humidity): 2 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 17:53:48.068905",
-    "Sensor sensor_1 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905",
-    "Sensor sensor_3 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905",
-    "Sensor sensor_5 (temperature): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905",
-    "Sensor sensor_5 (humidity): 1 hour gap from 2025-06-05 16:53:48.068905 to 2025-06-05 16:53:48.068905"
+    "Found 4 temperature values outside range [-10.0, 60.0]",
+    "Found 9 humidity values outside range [0.0, 100.0]",
+    "Found 2 battery_level values outside range [0.0, 100.0]",
+    "Sensor sensor_3 (temperature): 70 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_3 (humidity): 68 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_1 (humidity): 66 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_2 (temperature): 66 hour gap from 2023-06-02 07:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_4 (temperature): 66 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_1 (temperature): 65 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_2 (humidity): 63 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_4 (humidity): 62 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_5 (temperature): 60 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00",
+    "Sensor sensor_5 (humidity): 57 hour gap from 2023-06-02 06:45:00 to 2023-06-05 04:45:00"
   ],
   "quality_metrics": {
-    "time_range_start": "2025-06-05 16:53:48.068905+05:30",
-    "time_range_end": "2025-06-05 19:18:48.068905+05:30",
+    "time_range_start": "2023-06-02 06:45:00+05:30",
+    "time_range_end": "2023-06-05 05:15:00+05:30",
     "sensors_analyzed": 5,
-    "total_missing_hours": 10,
+    "total_missing_hours": 643,
     "significant_gaps": [
       {
-        "sensor_id": "sensor_1",
+        "sensor_id": "sensor_3",
         "reading_type": "temperature",
-        "missing_hours": 2,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 18:53:48.068905"
-      },
-      {
-        "sensor_id": "sensor_2",
-        "reading_type": "humidity",
-        "missing_hours": 2,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 18:53:48.068905"
-      },
-      {
-        "sensor_id": "sensor_4",
-        "reading_type": "humidity",
-        "missing_hours": 2,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 17:53:48.068905"
-      },
-      {
-        "sensor_id": "sensor_1",
-        "reading_type": "humidity",
-        "missing_hours": 1,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 16:53:48.068905"
+        "missing_hours": 70,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
       },
       {
         "sensor_id": "sensor_3",
         "reading_type": "humidity",
-        "missing_hours": 1,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 16:53:48.068905"
+        "missing_hours": 68,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_1",
+        "reading_type": "humidity",
+        "missing_hours": 66,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_2",
+        "reading_type": "temperature",
+        "missing_hours": 66,
+        "first_gap": "2023-06-02 07:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_4",
+        "reading_type": "temperature",
+        "missing_hours": 66,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_1",
+        "reading_type": "temperature",
+        "missing_hours": 65,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_2",
+        "reading_type": "humidity",
+        "missing_hours": 63,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
+      },
+      {
+        "sensor_id": "sensor_4",
+        "reading_type": "humidity",
+        "missing_hours": 62,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
       },
       {
         "sensor_id": "sensor_5",
         "reading_type": "temperature",
-        "missing_hours": 1,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 16:53:48.068905"
+        "missing_hours": 60,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
       },
       {
         "sensor_id": "sensor_5",
         "reading_type": "humidity",
-        "missing_hours": 1,
-        "first_gap": "2025-06-05 16:53:48.068905",
-        "last_gap": "2025-06-05 16:53:48.068905"
+        "missing_hours": 57,
+        "first_gap": "2023-06-02 06:45:00",
+        "last_gap": "2023-06-05 04:45:00"
       }
     ],
     "gap_threshold_hours": 1.0,
     "missing_values_by_type": {
-      "humidity": {
-        "total_records": 13,
+      "temperature": {
+        "total_records": 32,
         "missing_values": 0,
         "missing_percentage": 0.0
       },
-      "temperature": {
-        "total_records": 17,
+      "humidity": {
+        "total_records": 40,
         "missing_values": 0,
         "missing_percentage": 0.0
       }
     },
     "anomalies_by_type": {
-      "temperature": {
-        "total_records": 17,
-        "anomalous_count": 0,
-        "anomaly_percentage": 0.0
-      },
       "humidity": {
-        "total_records": 13,
-        "anomalous_count": 0,
-        "anomaly_percentage": 0.0
+        "total_records": 40,
+        "anomalous_count": 9,
+        "anomaly_percentage": 22.5
+      },
+      "temperature": {
+        "total_records": 32,
+        "anomalous_count": 4,
+        "anomaly_percentage": 12.5
       }
     },
     "sensor_coverage": {
       "sensor_5": {
         "reading_types": 2,
-        "total_readings": 10,
-        "first_reading": "2025-06-05 17:18:48.068905+05:30",
-        "last_reading": "2025-06-05 19:18:48.068905+05:30",
-        "avg_battery_level": 63.0
-      },
-      "sensor_4": {
-        "reading_types": 2,
-        "total_readings": 7,
-        "first_reading": "2025-06-05 16:53:48.068905+05:30",
-        "last_reading": "2025-06-05 18:53:48.068905+05:30",
-        "avg_battery_level": 62.8
+        "total_readings": 27,
+        "first_reading": "2023-06-02 07:00:00+05:30",
+        "last_reading": "2023-06-05 05:15:00+05:30",
+        "avg_battery_level": 61.6
       },
       "sensor_2": {
         "reading_types": 2,
-        "total_readings": 6,
-        "first_reading": "2025-06-05 16:58:48.068905+05:30",
-        "last_reading": "2025-06-05 19:13:48.068905+05:30",
-        "avg_battery_level": 60.8
+        "total_readings": 14,
+        "first_reading": "2023-06-02 06:45:00+05:30",
+        "last_reading": "2023-06-05 01:30:00+05:30",
+        "avg_battery_level": 64.1
+      },
+      "sensor_4": {
+        "reading_types": 2,
+        "total_readings": 14,
+        "first_reading": "2023-06-02 11:00:00+05:30",
+        "last_reading": "2023-06-05 03:30:00+05:30",
+        "avg_battery_level": 53.0
       },
       "sensor_1": {
         "reading_types": 2,
-        "total_readings": 5,
-        "first_reading": "2025-06-05 17:08:48.068905+05:30",
-        "last_reading": "2025-06-05 19:08:48.068905+05:30",
-        "avg_battery_level": 56.0
+        "total_readings": 12,
+        "first_reading": "2023-06-02 08:15:00+05:30",
+        "last_reading": "2023-06-04 19:30:00+05:30",
+        "avg_battery_level": 51.6
       },
       "sensor_3": {
-        "reading_types": 1,
-        "total_readings": 2,
-        "first_reading": "2025-06-05 17:38:48.068905+05:30",
-        "last_reading": "2025-06-05 18:43:48.068905+05:30",
-        "avg_battery_level": 48.3
+        "reading_types": 2,
+        "total_readings": 5,
+        "first_reading": "2023-06-02 09:00:00+05:30",
+        "last_reading": "2023-06-05 05:00:00+05:30",
+        "avg_battery_level": 76.2
       }
     },
     "overall_statistics": {
-      "total_records": 30,
+      "total_records": 72,
       "unique_sensors": 5,
       "unique_reading_types": 2,
-      "average_value": 23.27,
-      "average_battery_level": 60.4
+      "average_value": 44.29,
+      "average_battery_level": 59.8
     }
   },
   "pipeline_version": "1.0.0",
   "storage_stats": {
-    "records_received": 30,
-    "records_stored": 30,
-    "partitions_created": 1,
-    "files_written": 5,
-    "storage_size_bytes": 47924,
-    "quality_failed_stored": 0
+    "records_received": 72,
+    "records_stored": 72,
+    "partitions_created": 5,
+    "files_written": 24,
+    "storage_size_bytes": 228878,
+    "quality_failed_stored": 72
   }
 }

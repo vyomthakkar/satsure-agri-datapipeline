@@ -85,7 +85,9 @@ class TransformationSettings(BaseModel):
 class ValidationSettings(BaseModel):
     """Data quality validation parameters."""
     max_missing_percentage: float = Field(20.0, description="Maximum acceptable missing data percentage")
+    max_anomaly_percentage: float = Field(10.0, description="Maximum acceptable anomalous readings percentage")
     expected_frequency_hours: int = Field(1, description="Expected reading frequency in hours")
+    max_gap_hours: float = Field(2.0, description="Maximum acceptable gap in hours before flagging as issue")
 
 
 class IngestionSettings(BaseModel):

@@ -71,8 +71,10 @@ def sample_config(temp_dir):
             "outlier_handling": "flag"
         },
         "validation": {
-            "max_missing_percentage": 20,
-            "expected_frequency_hours": 1
+            "max_missing_percentage": 20.0,
+            "max_anomaly_percentage": 10.0,
+            "expected_frequency_hours": 1,
+            "max_gap_hours": 2.0
         },
         "ingestion": {
             "incremental_mode": True,
@@ -98,6 +100,34 @@ def sample_sensor_data():
         "reading_type": ["temperature", "humidity", "temperature", "humidity", "temperature"],
         "value": [25.5, 65.2, 24.8, 68.1, 26.2],
         "battery_level": [95.5, 95.0, 87.3, 86.8, 92.1]
+    }
+    return pd.DataFrame(data)
+
+
+@pytest.fixture
+def sample_transformed_data():
+    """Create sample transformed data (output from transformation component)."""
+    from datetime import timezone, timedelta
+
+    # Simulate timezone conversion to UTC+5:30
+    ist_tz = timezone(timedelta(hours=5, minutes=30))
+
+    data = {
+        "sensor_id": ["sensor_1", "sensor_1", "sensor_2", "sensor_2", "sensor_3"],
+        "timestamp": [
+            datetime(2023, 6, 1, 15, 30, 0, tzinfo=ist_tz),  # 10:00 UTC -> 15:30 IST
+            datetime(2023, 6, 1, 16, 0, 0, tzinfo=ist_tz),   # 10:30 UTC -> 16:00 IST
+            datetime(2023, 6, 1, 15, 45, 0, tzinfo=ist_tz),  # 10:15 UTC -> 15:45 IST
+            datetime(2023, 6, 1, 16, 15, 0, tzinfo=ist_tz),  # 10:45 UTC -> 16:15 IST
+            datetime(2023, 6, 1, 16, 30, 0, tzinfo=ist_tz)   # 11:00 UTC -> 16:30 IST
+        ],
+        "reading_type": ["temperature", "humidity", "temperature", "humidity", "temperature"],
+        "value": [25.5, 65.2, 24.8, 68.1, 26.2],
+        "battery_level": [95.5, 95.0, 87.3, 86.8, 92.1],
+        "date": [datetime(2023, 6, 1).date()] * 5,
+        "daily_avg_value": [25.83, 66.65, 25.83, 66.65, 25.83],  # Daily averages per reading type
+        "rolling_avg_value": [25.5, 65.2, 25.15, 66.65, 25.5],  # Rolling averages
+        "anomalous_reading": [False, False, False, False, False]  # No anomalies in clean test data
     }
     return pd.DataFrame(data)
 

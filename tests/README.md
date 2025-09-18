@@ -38,6 +38,35 @@ Comprehensive unit tests for the ingestion component covering:
 - ✅ Force full reload override
 - ✅ Specific file processing
 
+### Unit Tests (`test_transformation.py`)
+Comprehensive unit tests for the transformation component covering:
+
+**Core Functionality:**
+- ✅ Component initialization and configuration
+- ✅ Data cleaning (duplicate removal, missing value handling)
+- ✅ Sensor calibration with multiplier/offset
+- ✅ Timezone conversion (UTC to target timezone)
+- ✅ Derived fields calculation (daily averages, rolling averages)
+
+**Anomaly Detection:**
+- ✅ Z-score based outlier detection (configurable threshold)
+- ✅ Range-based anomaly detection (per reading type)
+- ✅ Outlier handling modes (flag vs remove)
+- ✅ Battery level validation (separate from reading anomalies)
+- ✅ Statistics tracking without double-counting
+
+**Data Quality:**
+- ✅ Empty DataFrame handling
+- ✅ Missing critical field validation
+- ✅ Battery level imputation (group median with fallback)
+- ✅ Transformation statistics tracking
+- ✅ Data retention rate calculation
+
+**Error Handling:**
+- ✅ Invalid data structure handling
+- ✅ TransformationError propagation
+- ✅ Comprehensive logging and summary reporting
+
 ### Integration Tests (`test_ingestion_integration.py`)
 Real-world integration tests:
 
@@ -76,14 +105,18 @@ python -m pytest tests/ --cov=src --cov-report=html
 
 ### Specific Test Modules
 ```bash
-# Unit tests only
+# Ingestion tests
 python -m pytest tests/test_ingestion.py -v
+
+# Transformation tests
+python -m pytest tests/test_transformation.py -v
 
 # Integration tests (requires project setup)
 python -m pytest tests/test_ingestion_integration.py -v
 
-# Specific test
+# Specific test examples
 python -m pytest tests/test_ingestion.py::TestParquetIngestionComponent::test_execute_with_sample_data -v
+python -m pytest tests/test_transformation.py::TestAgricultureTransformationComponent::test_anomaly_detection_with_outliers -v
 ```
 
 ### Performance Tests
@@ -96,14 +129,21 @@ python -m pytest tests/ -m slow -v
 
 ### Current Status: ✅ All Unit Tests Passing
 
+**Ingestion Tests:**
 ```
 ======================= 21 passed, 5 warnings ========================
 ```
 
+**Transformation Tests:**
+```
+======================= 18 passed, 0 warnings ========================
+```
+
 **Test Coverage:**
 - 🎯 **100% Function Coverage**: All public methods tested
-- 🎯 **Edge Case Coverage**: Error conditions, corrupted files, schema issues
+- 🎯 **Edge Case Coverage**: Error conditions, corrupted files, schema issues, anomaly detection
 - 🎯 **Integration Coverage**: Real data processing validated
+- 🎯 **Data Quality Coverage**: Missing values, duplicates, outliers, calibration
 
 ### Key Test Insights
 
@@ -116,7 +156,15 @@ Tests confirm that file processing errors don't crash the entire pipeline - it c
 **3. Incremental Processing**
 Checkpoint management works correctly, allowing both incremental daily processing and full reloads for data corrections.
 
-**4. Real Data Validation**
+**4. Anomaly Detection Robustness**
+Transformation tests validate sophisticated anomaly detection:
+- ✅ Z-score based detection with configurable thresholds
+- ✅ Range-based validation per reading type
+- ✅ No double-counting of outliers flagged by multiple methods
+- ✅ Battery level validation separate from reading anomalies
+- ✅ Proper handling of edge cases (single values, all-NaN groups)
+
+**5. Real Data Validation**
 Successfully processes the project's sample data file:
 - ✅ 30 records from 5 sensors
 - ✅ Temperature and humidity readings
@@ -151,14 +199,17 @@ test:
   script:
     - pip install -r requirements.txt
     - python -m pytest tests/test_ingestion.py --cov=src
+    - python -m pytest tests/test_transformation.py --cov=src
     - python -m pytest tests/test_ingestion_integration.py || true  # Allow failure if no real data
 ```
 
 ## Future Enhancements
 
-- [ ] Add transformation component tests
+- [x] ~~Add transformation component tests~~ ✅ **Completed**
 - [ ] Add validation component tests
 - [ ] Add loading component tests
 - [ ] Add end-to-end pipeline tests
 - [ ] Add performance benchmarking
 - [ ] Add data quality regression tests
+- [ ] Add transformation performance tests (large datasets)
+- [ ] Add anomaly detection accuracy benchmarks

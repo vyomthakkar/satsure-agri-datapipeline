@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from src.config.models import PipelineConfig
 from src.components.ingestion import ParquetIngestionComponent
 from src.components.transformation import AgricultureTransformationComponent
+from src.components.validation import AgricultureValidationComponent
 
 
 def main():
@@ -30,7 +31,8 @@ def main():
         # Initialize components
         ingestion = ParquetIngestionComponent(config)
         transformation = AgricultureTransformationComponent(config)
-        print("✓ Initialized ingestion and transformation components")
+        validation = AgricultureValidationComponent(config)
+        print("✓ Initialized ingestion, transformation, and validation components")
 
         print("\n📥 Step 1: Data Ingestion")
         print("-" * 30)
@@ -97,6 +99,39 @@ def main():
                 print("\n📈 Transformation Statistics:")
                 print("-" * 30)
                 for key, value in transformation.stats.items():
+                    print(f"   {key.replace('_', ' ').title()}: {value}")
+
+                print("\n🔍 Step 3: Data Validation")
+                print("-" * 30)
+
+                # Run validation
+                validation_result = validation.execute(transformed_data)
+                print(f"✓ Validation completed: {'PASSED' if validation_result.passed else 'FAILED'}")
+
+                if validation_result.total_records > 0:
+                    print(f"   - Records validated: {validation_result.total_records}")
+                    print(f"   - Issues found: {len(validation_result.issues_found)}")
+
+                    if validation_result.issues_found:
+                        print("   - Sample issues:")
+                        for issue in validation_result.issues_found[:3]:
+                            print(f"     • {issue}")
+
+                    # Show key quality metrics
+                    quality_metrics = validation_result.quality_metrics
+                    if "overall_statistics" in quality_metrics:
+                        overall = quality_metrics["overall_statistics"]
+                        print(f"   - Data quality score: {validation._calculate_quality_score(quality_metrics):.1f}%")
+                        print(f"   - Unique sensors: {overall.get('unique_sensors', 0)}")
+
+                    # Check if quality report was generated
+                    report_path = Path(config.paths.reports_dir) / "data_quality_report.csv"
+                    if report_path.exists():
+                        print(f"   - Quality report saved: {report_path}")
+
+                print("\n🔍 Validation Statistics:")
+                print("-" * 30)
+                for key, value in validation.stats.items():
                     print(f"   {key.replace('_', ' ').title()}: {value}")
 
             else:

@@ -1,0 +1,7 @@
+category,metric,value,threshold,status,details,validation_timestamp,validator_version
+overall,total_records,10.0,,pass,Total records processed: 10,2025-09-18T12:32:01.212604,1.0.0
+overall,unique_sensors,1.0,,info,Unique sensors: 1,2025-09-18T12:32:01.212604,1.0.0
+missing_values,temperature_missing_percentage,30.0,20.0,fail,3 out of 10 records,2025-09-18T12:32:01.212604,1.0.0
+anomalies,temperature_anomaly_percentage,20.0,10.0,fail,2 out of 10 records,2025-09-18T12:32:01.212604,1.0.0
+time_gaps,total_missing_hours,0.0,2.0,pass,Total missing hourly readings: 0,2025-09-18T12:32:01.212604,1.0.0
+sensor_coverage,sensor_1_battery_level,90.0,30.0,pass,"Average battery: 90.0%, 10 readings",2025-09-18T12:32:01.212604,1.0.0

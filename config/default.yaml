@@ -60,8 +60,10 @@ transformation:
   outlier_handling: "flag"  # flag or remove
 
 validation:
-  max_missing_percentage: 20
-  expected_frequency_hours: 1
+  max_missing_percentage: 20.0      # Maximum acceptable missing data percentage
+  max_anomaly_percentage: 10.0      # Maximum acceptable anomalous readings percentage
+  expected_frequency_hours: 1        # Expected reading frequency in hours
+  max_gap_hours: 2.0                # Maximum acceptable gap in hours before flagging as issue
 
 ingestion:
   incremental_mode: true

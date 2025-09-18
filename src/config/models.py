@@ -8,7 +8,7 @@ They ensure all required settings are present and have the correct types.
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 import yaml
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class PipelineInfo(BaseModel):
@@ -30,7 +30,8 @@ class DataPaths(BaseModel):
     reports_dir: str = Field(..., description="Directory for quality reports")
     dq_report_csv: str = Field(..., description="Data quality report file path")
 
-    @validator('*', pre=True)
+    @field_validator('data_raw', 'data_processed', 'reports_dir', 'dq_report_csv', mode='before')
+    @classmethod
     def resolve_paths(cls, v):
         """Convert relative paths to absolute paths."""
         if isinstance(v, str):
@@ -45,12 +46,13 @@ class DataPaths(BaseModel):
 
 class SchemaDefinition(BaseModel):
     """Expected data schema definition."""
+    model_config = ConfigDict(
+        # Avoid field name conflicts by using alias
+        extra='forbid'
+    )
+
     expected_columns: List[str] = Field(..., description="Required column names")
     types: Dict[str, str] = Field(..., description="Column name to DuckDB type mapping")
-
-    class Config:
-        """Pydantic config to avoid field name conflicts."""
-        fields = {'types': 'column_types'}
 
 
 class ValueRange(BaseModel):
@@ -90,7 +92,8 @@ class IngestionSettings(BaseModel):
     incremental_mode: bool = Field(True, description="Enable incremental processing")
     checkpoint_file: str = Field(..., description="Checkpoint file path")
 
-    @validator('checkpoint_file', pre=True)
+    @field_validator('checkpoint_file', mode='before')
+    @classmethod
     def resolve_checkpoint_path(cls, v):
         """Convert relative checkpoint path to absolute path."""
         if isinstance(v, str):
@@ -104,10 +107,16 @@ class IngestionSettings(BaseModel):
 
 class PipelineConfig(BaseModel):
     """Complete pipeline configuration model."""
+    model_config = ConfigDict(
+        # Allow population by alias so YAML can use "schema"
+        populate_by_name=True,
+        extra='forbid'
+    )
+
     pipeline: PipelineInfo = Field(..., description="Pipeline metadata")
     project: ProjectSettings = Field(..., description="Project settings")
     paths: DataPaths = Field(..., description="File system paths")
-    schema: SchemaDefinition = Field(..., description="Data schema definition")
+    data_schema: SchemaDefinition = Field(..., description="Data schema definition", alias="schema")
     ranges: Dict[str, ValueRange] = Field(..., description="Acceptable value ranges per measurement type")
     calibration: Dict[str, CalibrationParams] = Field(..., description="Calibration parameters per measurement type")
     write: WriteSettings = Field(..., description="Output writing configuration")

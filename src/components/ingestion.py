@@ -76,21 +76,15 @@ class ParquetIngestionComponent(IngestionComponent):
             # Process files
             all_data = []
             for file_path in files_to_process:
-                try:
-                    file_data = self._process_file(file_path)
-                    if file_data is not None and not file_data.empty:
-                        all_data.append(file_data)
-                        self.stats["files_processed"] += 1
-                        self.stats["records_ingested"] += len(file_data)
-                        self.logger.info(f"Successfully processed {file_path.name}: {len(file_data)} records")
-                    else:
-                        self.stats["files_skipped"] += 1
-                        self.logger.warning(f"Skipped {file_path.name}: no valid data")
-
-                except Exception as e:
+                file_data = self._process_file(file_path)
+                if file_data is not None and not file_data.empty:
+                    all_data.append(file_data)
+                    self.stats["files_processed"] += 1
+                    self.stats["records_ingested"] += len(file_data)
+                    self.logger.info(f"Successfully processed {file_path.name}: {len(file_data)} records")
+                else:
                     self.stats["files_failed"] += 1
-                    self.logger.error(f"Failed to process {file_path.name}: {str(e)}")
-                    # Continue processing other files
+                    self.logger.warning(f"Failed to process {file_path.name}: no valid data or processing error")
 
             # Combine all data
             if all_data:
@@ -223,8 +217,8 @@ class ParquetIngestionComponent(IngestionComponent):
             actual_types_list = [str(t).upper() for t in rel.types]
             actual_type_map = dict(zip(actual_cols, actual_types_list))
 
-            expected_cols = list(self.config.schema.expected_columns)
-            expected_type_map = {k: v.upper() for k, v in self.config.schema.types.items()}
+            expected_cols = list(self.config.data_schema.expected_columns)
+            expected_type_map = {k: v.upper() for k, v in self.config.data_schema.types.items()}
 
             # Validate presence of expected columns and check for extras
             missing = [c for c in expected_cols if c not in actual_cols]
@@ -241,11 +235,16 @@ class ParquetIngestionComponent(IngestionComponent):
                     f"{file_path.name} column order differs. Expected {expected_cols}, found {actual_cols}"
                 )
 
-            # Validate types by column name
+            # TODO(human): Implement flexible type validation
+            # Currently this checks for exact type matches, but we need to handle
+            # compatible types like TIMESTAMP vs TIMESTAMP_NS, DOUBLE vs FLOAT64, etc.
+            # Create a helper function to check type compatibility instead of exact equality.
+
+            # Validate types by column name (with compatibility checking)
             type_mismatches = {
                 c: {"expected": expected_type_map.get(c), "actual": actual_type_map.get(c)}
                 for c in expected_cols
-                if expected_type_map.get(c) != actual_type_map.get(c)
+                if not self._are_types_compatible(expected_type_map.get(c), actual_type_map.get(c))
             }
             if type_mismatches:
                 self.logger.error(f"{file_path.name} type mismatches: {type_mismatches}")
@@ -270,3 +269,29 @@ class ParquetIngestionComponent(IngestionComponent):
         if self.stats["files_discovered"] > 0:
             success_rate = (self.stats["files_processed"] / self.stats["files_discovered"]) * 100
             self.logger.info(f"Success Rate: {success_rate:.1f}%")
+
+    def _are_types_compatible(self, expected_type: str, actual_type: str) -> bool:
+        """
+        Check if two DuckDB types are compatible.
+
+        Args:
+            expected_type: Expected type from configuration
+            actual_type: Actual type from file
+
+        Returns:
+            True if types are compatible, False otherwise
+        """
+        if expected_type == actual_type:
+            return True
+
+        # Define compatible type groups
+        timestamp_types = {"TIMESTAMP", "TIMESTAMP_NS", "TIMESTAMP_MS", "TIMESTAMP_S"}
+        numeric_types = {"DOUBLE", "FLOAT64", "FLOAT", "REAL"}
+        string_types = {"VARCHAR", "STRING", "TEXT"}
+
+        # Check if both types are in the same compatibility group
+        for type_group in [timestamp_types, numeric_types, string_types]:
+            if expected_type in type_group and actual_type in type_group:
+                return True
+
+        return False

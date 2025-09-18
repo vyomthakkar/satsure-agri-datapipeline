@@ -1,5 +1,7 @@
 # Agricultural Sensor Data Pipeline
 
+Link to explainer video: https://www.tella.tv/video/satsure-data-pipeline-assignment-ejdh
+
 This pipeline ingests, transforms, validates, and stores sensor readings (temperature, humidity, battery levels) using DuckDB and Parquet storage.
 
 ### Key Features

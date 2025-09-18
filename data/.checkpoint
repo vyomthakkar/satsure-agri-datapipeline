@@ -1,15 +1,15 @@
 {
   "processed_files": [
     "2023-06-05_missing_columns.parquet",
-    "2023-06-01.parquet",
-    "2023-06-04.parquet",
-    "non_existent_file.parquet",
-    "2023-06-07_wrong_types.parquet",
-    "2023-06-02.parquet",
+    "2023-06-06_extra_columns.parquet",
     "2023-06-03.parquet",
-    "2023-06-06_extra_columns.parquet"
+    "2023-06-02.parquet",
+    "non_existent_file.parquet",
+    "2023-06-04.parquet",
+    "2023-06-01.parquet",
+    "2023-06-07_wrong_types.parquet"
   ],
-  "last_update": "2025-09-18T17:18:33.558703",
+  "last_update": "2025-09-18T19:18:06.087321",
   "last_run_stats": {
     "files_discovered": 1,
     "files_processed": 0,
